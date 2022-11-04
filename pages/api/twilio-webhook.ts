@@ -27,7 +27,9 @@ export default async function handler(
     },
   });
 
-  response.message("loading beep3r...");
+  response.message(
+    "🟢 Message received. Further instructions will be broadcasted before 20:33:000"
+  );
 
   res.setHeader("Content-Type", "text/xml");
 
