@@ -29,7 +29,7 @@ export default async function handler(
       },
       {
         trait_type: "VARIATION",
-        value: "SPATIAL BLUE",
+        value: "SPATIAL GREEN",
       },
     ],
     background_color: "94C53D",
