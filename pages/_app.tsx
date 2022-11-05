@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
+import { useRouter } from "next/router";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
@@ -33,11 +34,18 @@ const getSiweMessageOptions: GetSiweMessageOptions = () => ({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   const [message, setMessage] = useState("Sign into beeper");
 
   const getSiweMessageOptions: GetSiweMessageOptions = () => ({
     statement: message,
   });
+
+  if (router.pathname.split("/")[1] == "animation") {
+    return (
+      <Component {...pageProps} message={message} setMessage={setMessage} />
+    );
+  }
 
   return (
     <WagmiConfig client={wagmiClient}>
