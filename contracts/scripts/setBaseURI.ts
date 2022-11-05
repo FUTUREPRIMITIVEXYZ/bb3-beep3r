@@ -2,12 +2,10 @@ import { ethers, upgrades } from "hardhat";
 import { ContractTransaction } from "ethers";
 
 async function main() {
-  console.log("Deploying address...");
-
-  const BEEPER = await ethers.getContractFactory("BEEPER");
-  const beeper = await upgrades.deployProxy(BEEPER);
-
-  await beeper.deployed();
+  const beeper = await ethers.getContractAt(
+    "BEEPER",
+    "0xe9d3fE575e44803613B6fbd64C8f4A55BE55ab83"
+  );
 
   console.log("Setting baseURI...");
 
