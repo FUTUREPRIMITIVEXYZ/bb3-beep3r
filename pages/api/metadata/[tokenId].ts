@@ -33,7 +33,7 @@ export default async function handler(
       },
     ],
     background_color: "006EAC",
-    animation_url: `https://beeper.bb3.xyz/animation/${tokenId}`,
-    external_url: `https://beeper.bb3.xyz/token/${tokenId}`,
+    animation_url: `https://beeper.bb3.xyz/`,
+    external_url: `https://beeper.bb3.xyz`,
   });
 }
