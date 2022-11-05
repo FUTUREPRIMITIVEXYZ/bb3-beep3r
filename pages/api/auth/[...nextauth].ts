@@ -3,8 +3,19 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
 import { PrismaClient } from "@prisma/client";
+import { ethers } from "ethers";
+import abi from "./abi.json";
+
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || "";
 
 const prisma = new PrismaClient();
+
+const provider = new ethers.providers.AlchemyProvider(
+  "homestead",
+  process.env.ALCHEMY_API_KEY
+);
+
+const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -91,6 +102,18 @@ export default async function auth(req: any, res: any) {
           }
 
           const [, code] = tuple;
+
+          console.log({ result });
+
+          // check if user has the nft in their wallet
+          const balance = await contract.balanceOf(result.data.address);
+
+          const balanceNumber = balance.toNumber();
+
+          if (!balanceNumber) {
+            console.log(`Does not have beeper: ${result.data.address}`);
+            return false;
+          }
 
           const user = await prisma.user.update({
             where: {
