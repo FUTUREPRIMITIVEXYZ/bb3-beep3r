@@ -10,6 +10,18 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const isValidRequest = Twilio.validateRequest(
+    process.env.TWILIO_AUTH_TOKEN!,
+    req.headers["x-twilio-signature"] as string,
+    process.env.TWILIO_WEBHOOK_URL!,
+    req.body
+  );
+
+  if (!isValidRequest) {
+    res.send(200);
+    return;
+  }
+
   const response = new Twilio.twiml.MessagingResponse();
   const provider = new ethers.providers.AlchemyProvider(
     "homestead",
