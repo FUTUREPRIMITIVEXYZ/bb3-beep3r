@@ -102,12 +102,7 @@ export default async function auth(req: any, res: any) {
           }
 
           const [, code] = tuple;
-
-          console.log({ result });
-
-          // check if user has the nft in their wallet
           const balance = await contract.balanceOf(result.data.address);
-
           const balanceNumber = balance.toNumber();
 
           if (!balanceNumber) {
