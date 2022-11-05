@@ -32,7 +32,7 @@ export default async function handler(
         value: "SPATIAL BLUE",
       },
     ],
-    background_color: "94C53D",
+    background_color: "006EAC",
     animation_url: `https://beeper.bb3.xyz/animation/${tokenId}`,
     external_url: `https://beeper.bb3.xyz/token/${tokenId}`,
   });
