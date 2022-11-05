@@ -55,5 +55,7 @@ const worker = new Worker<SMSJobData>(
       );
     }
   },
-  { connection }
+  { connection, autorun: false }
 );
+
+export default worker;

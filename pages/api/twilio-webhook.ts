@@ -5,6 +5,11 @@ import { PrismaClient } from "@prisma/client";
 import { ethers } from "ethers";
 import crypto from "crypto";
 
+import { Queue } from "bullmq";
+import connection from "../../workers/connection";
+
+const mintQueue = new Queue("mint", { connection });
+
 const prisma = new PrismaClient();
 
 function generateUniqueCode() {
@@ -21,6 +26,8 @@ export default async function handler(
     process.env.TWILIO_WEBHOOK_URL!,
     req.body
   );
+
+  console.log(isValidRequest);
 
   if (!isValidRequest) {
     res.setHeader("Content-Type", "text/xml");
@@ -101,8 +108,9 @@ export default async function handler(
     //   `🟢 Wallet confirmed. Airdrop in coming... Activate here ${requestUrl}`
     // );
     response.message(
-      `🟢 Wallet confirmed. Further instructions will be broadcasted.`
+      `🟢 Wallet confirmed. Further instructions will be broadcasted`
     );
+    // await mintQueue.add("mint", { wallet });
   } else {
     response.message(
       `🟢 Message received. Reply with your wallet address or ENS to enter.`
