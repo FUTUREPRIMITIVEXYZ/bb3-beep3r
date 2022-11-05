@@ -10,7 +10,6 @@ export default function Home() {
         <meta name="description" content="beepbeepbeep" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className="w-full h-screen flex items-center justify-center overflow-hidden bg-black text-bpr-green relative">
         <a href="sms:+12058838339">
           <div className="absolute top-0 w-full text-center p-4 cursor-pointer bg-black backdrop-blur-lg text-xl uppercase font-mono tracking-wider">
@@ -18,7 +17,6 @@ export default function Home() {
             <p>+1 205-883-8339</p>
           </div>
         </a>
-
         <video
           className="w-full"
           src="/beeper_promo.mp4"
