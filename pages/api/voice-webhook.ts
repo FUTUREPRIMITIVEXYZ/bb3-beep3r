@@ -2,10 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Twilio from "twilio";
 import { PrismaClient } from "@prisma/client";
-import { ethers } from "ethers";
-import crypto from "crypto";
-
-const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,7 +23,7 @@ export default async function handler(
   const response = new Twilio.twiml.VoiceResponse();
 
   response.say(
-    "greetings ETH SF hacker. this is mizuna from the BB3 mainframe. you have been selected to participate in the beep3r experiment. Text your wallet address or ENS to this number to begin. Goodbye."
+    "greetings eeth SF hacker. this is mizuna from the BB3 mainframe. you have been selected to participate in the beep3r experiment. Text your wallet address or ENS to this number to begin. Goodbye."
   );
 
   res.setHeader("Content-Type", "text/xml");
