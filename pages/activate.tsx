@@ -3,7 +3,7 @@ import { getSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -27,9 +27,10 @@ type AuthenticatedPageProps = InferGetServerSidePropsType<
   typeof getServerSideProps
 >;
 
-const Activate = ({ address, message, setMessage }: AuthenticatedPageProps) => {
+const Activate = ({ address, setMessage }: AuthenticatedPageProps) => {
   const router = useRouter();
   const code = router.query["code"];
+  const { openConnectModal } = useConnectModal();
 
   useEffect(() => {
     if (!code) {
@@ -38,6 +39,23 @@ const Activate = ({ address, message, setMessage }: AuthenticatedPageProps) => {
 
     setMessage(`Sign into beeper: ${code}`);
   }, [code]);
+
+  useEffect(() => {
+    console.log("opening...", openConnectModal);
+    openConnectModal && openConnectModal();
+  }, [openConnectModal, address]);
+
+  useEffect(() => {
+    async function monitorAccount() {
+      const session = await getSession();
+
+      if (session?.user?.name) {
+        router.push("/");
+      }
+    }
+
+    monitorAccount();
+  });
 
   return <>{address ? <div>{address}</div> : <ConnectButton />}</>;
 };
