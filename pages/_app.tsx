@@ -28,10 +28,6 @@ const wagmiClient = createClient({
   provider,
 });
 
-const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-  statement: "Sign in to beeper",
-});
-
 export default function App({ Component, pageProps }: AppProps) {
   const [message, setMessage] = useState("Sign into beeper");
 
