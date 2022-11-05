@@ -96,8 +96,11 @@ export default async function handler(
 
     console.log({ requestUrl });
 
+    // response.message(
+    //   `🟢 Wallet confirmed. Airdrop in coming... Activate here ${requestUrl}`
+    // );
     response.message(
-      `🟢 Wallet confirmed. Airdrop in coming... Activate here ${requestUrl}`
+      `🟢 Wallet confirmed. Further instructions will be broadcasted.`
     );
   } else {
     response.message(
