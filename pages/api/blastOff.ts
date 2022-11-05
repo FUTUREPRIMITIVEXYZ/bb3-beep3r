@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-// import Twilio from "twilio";
 // import { Queue } from "bullmq";
+// import IORedis from "ioredis";
 
-// const sendEmailQueue = new Queue("sendAuthEmail", {
+// const smsQueue = new Queue("sms", {
 //   connection: new IORedis(process.env.REDIS_URL),
 // });
 
@@ -18,8 +18,10 @@ export default async function handler(
 
     if (method === "POST") {
       // TODO:  send this via twillio
-      // const response = new Twilio.twiml.MessagingResponse();
-      // response.message(req.body);
+
+      // smsQueue.add("sms", {
+      //   message: req.body,
+      // });
 
       return res.status(200).send(JSON.stringify({ data: "success" }));
     }
