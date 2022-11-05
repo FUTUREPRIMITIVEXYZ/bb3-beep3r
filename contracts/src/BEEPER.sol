@@ -9,7 +9,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721Burnab
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
-contract BEEPERS is
+contract BEEPER is
     Initializable,
     ERC721Upgradeable,
     PausableUpgradeable,
@@ -20,6 +20,7 @@ contract BEEPERS is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     uint256 private _tokenIdCounter;
+    string private baseURI;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -38,8 +39,15 @@ contract BEEPERS is
         _grantRole(MINTER_ROLE, msg.sender);
     }
 
-    function _baseURI() internal pure override returns (string memory) {
-        return "https://beeper.bb3.xyz/api/metadata/";
+    function _baseURI() internal view override returns (string memory) {
+        return baseURI;
+    }
+
+    function setBaseURI(string calldata newURI)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        baseURI = newURI;
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
@@ -51,9 +59,8 @@ contract BEEPERS is
     }
 
     function safeMint(address to) public onlyRole(MINTER_ROLE) {
-        uint256 tokenId = _tokenIdCounter;
         _tokenIdCounter += 1;
-        _safeMint(to, tokenId);
+        _safeMint(to, _tokenIdCounter);
     }
 
     function _beforeTokenTransfer(
