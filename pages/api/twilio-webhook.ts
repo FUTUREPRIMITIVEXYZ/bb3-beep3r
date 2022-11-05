@@ -23,7 +23,8 @@ export default async function handler(
   );
 
   if (!isValidRequest) {
-    res.send(200);
+    res.setHeader("Content-Type", "text/xml");
+    res.send(403);
     return;
   }
 
