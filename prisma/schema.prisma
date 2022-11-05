@@ -16,6 +16,7 @@ model User {
   wallet String? @unique
   code String? @unique
   verified Boolean?
+  hasClaimedAirdrop Boolean?
 
   messagesFrom Message[] @relation("userFrom")
   messagesTo Message[] @relation("userTo")
