@@ -4,9 +4,10 @@ import Twilio from "twilio";
 import { PrismaClient } from "@prisma/client";
 import { ethers } from "ethers";
 import crypto from "crypto";
-
 import { Queue } from "bullmq";
 import connection from "../../workers/connection";
+
+import artifact from "../../contracts/artifacts/src/BEEPER.sol/BEEPER.json";
 
 const mintQueue = new Queue("mint", { connection });
 
@@ -40,11 +41,35 @@ export default async function handler(
     "homestead",
     process.env.ALCHEMY_API_KEY
   );
-
-  console.log(req.body.Body);
+  const contract = new ethers.Contract(
+    CONTRACT_ADDRESS,
+    artifact.abi,
+    provider
+  );
 
   const body: string = req.body.Body;
   const phone = req.body.From;
+
+  let user = await prisma.user.upsert({
+    where: {
+      phone,
+    },
+    create: {
+      phone,
+    },
+    update: {
+      phone,
+    },
+  });
+
+  if (body.toLowerCase().includes("beep boop")) {
+    response.message(
+      `🟢 Message received. Reply with your wallet address or ENS to intiate airdrop.`
+    );
+    res.setHeader("Content-Type", "text/xml");
+    res.status(200).send(response.toString());
+    return;
+  }
 
   const includedWallet = body
     .split(" ")
@@ -74,50 +99,43 @@ export default async function handler(
 
   const wallet = includedWallet || walletFromENS;
 
-  await prisma.user.upsert({
-    where: {
-      phone,
-    },
-    create: {
-      phone,
-    },
-    update: {
-      phone,
-    },
-  });
-
-  if (wallet) {
-    const code = generateUniqueCode();
-    await prisma.user.update({
+  if (wallet && !user.wallet) {
+    user = await prisma.user.update({
       where: {
-        phone,
+        id: user.id,
       },
       data: {
         wallet,
-        code,
-        verified: false,
       },
     });
-
-    const host = req.headers.host;
-    const requestUrl = `https://${host}?code=${code}`;
-
-    console.log({ requestUrl });
-
-    // response.message(
-    //   `🟢 Wallet confirmed. Airdrop in coming... Activate here ${requestUrl}`
-    // );
-    response.message(
-      `🟢 Wallet confirmed. Further instructions will be broadcasted`
-    );
-    // await mintQueue.add("mint", { wallet });
-  } else {
-    response.message(
-      `🟢 Message received. Reply with your wallet address or ENS to enter.`
-    );
   }
 
-  res.setHeader("Content-Type", "text/xml");
+  const walletBalance = await contract.balanceOf(user.wallet);
 
+  // mint token to new wallets
+  if (user.wallet !== null && walletBalance === 0) {
+    // await mintQueue.add("mint", { wallet });
+    response.message(`✈️ Wallet confirmed. Airdrop incoming...`);
+    res.setHeader("Content-Type", "text/xml");
+    res.status(200).send(response.toString());
+    return;
+  }
+
+  // existing holders recieve activation code
+  if (user.wallet !== null && walletBalance > 0) {
+    const code = generateUniqueCode();
+    const host = req.headers.host;
+    const activateUrl = `https://${host}?code=${code}`;
+    response.message(`Activate your beeper: ${activateUrl}`);
+    res.setHeader("Content-Type", "text/xml");
+    res.status(200).send(response.toString());
+    return;
+  }
+
+  // fallback for unknown messages
+  response.message(
+    `🟢 Message received. Reply with your wallet address or ENS to intiate airdrop.`
+  );
+  res.setHeader("Content-Type", "text/xml");
   res.status(200).send(response.toString());
 }
