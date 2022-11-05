@@ -84,11 +84,11 @@ export default async function handler(
     });
 
     response.message(
-      `🟢 Wallet received. Further instructions will be broadcasted before 20:33:000`
+      `🟢 Wallet confirmed. Further instructions will be broadcasted before 23:33:000`
     );
   } else {
     response.message(
-      `🟢 Message received. Further instructions will be broadcasted before 20:33:000`
+      `🟢 Message received. Reply with your wallet address or ENS to enter.`
     );
   }
 
