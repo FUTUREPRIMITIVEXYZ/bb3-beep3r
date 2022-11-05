@@ -3,8 +3,13 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Twilio from "twilio";
 import { PrismaClient } from "@prisma/client";
 import { ethers } from "ethers";
+import crypto from "crypto";
 
 const prisma = new PrismaClient();
+
+function generateUniqueCode() {
+  return crypto.randomBytes(8).toString("hex");
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -74,17 +79,25 @@ export default async function handler(
   });
 
   if (wallet) {
+    const code = generateUniqueCode();
     await prisma.user.update({
       where: {
         phone,
       },
       data: {
         wallet,
+        code,
+        verified: false,
       },
     });
 
+    const host = req.headers.host;
+    const requestUrl = `https://${host}?code=${code}`;
+
+    console.log({ requestUrl });
+
     response.message(
-      `🟢 Wallet confirmed. Further instructions will be broadcasted before 23:33:000`
+      `🟢 Wallet confirmed. Airdrop in coming... Activate here ${requestUrl}`
     );
   } else {
     response.message(
