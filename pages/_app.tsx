@@ -13,26 +13,6 @@ import {
 import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 
-const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
-  [alchemyProvider({ apiKey: process.env.ALCHEMY_ID }), publicProvider()]
-);
-
-const { connectors } = getDefaultWallets({
-  appName: "My RainbowKit App",
-  chains,
-});
-
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors,
-  provider,
-});
-
-const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-  statement: "Sign in to beeper",
-});
-
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [message, setMessage] = useState("Sign into beeper");
@@ -46,6 +26,22 @@ export default function App({ Component, pageProps }: AppProps) {
       <Component {...pageProps} message={message} setMessage={setMessage} />
     );
   }
+
+  const { chains, provider } = configureChains(
+    [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+    [alchemyProvider({ apiKey: process.env.ALCHEMY_ID }), publicProvider()]
+  );
+
+  const { connectors } = getDefaultWallets({
+    appName: "My RainbowKit App",
+    chains,
+  });
+
+  const wagmiClient = createClient({
+    autoConnect: true,
+    connectors,
+    provider,
+  });
 
   return (
     <WagmiConfig client={wagmiClient}>
