@@ -14,7 +14,7 @@ const Animation = () => {
   ];
 
   const [triggerEnter, setTriggerEnter] = useState(false);
-  const [heroImage, setHeroImage] = useState("/beeper.gif");
+  const [heroImage, setHeroImage] = useState("/beeper.webm");
 
   useEffect(() => {
     setTimeout(() => {
@@ -36,23 +36,51 @@ const Animation = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="w-full md:w-[1080px] md:h-[1080px] bg-black text-bpr-green relative font-mono">
-        {/* <video
-          className="w-full fixed"
-          src="/beeper_promo.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-        /> */}
-        <motion.img
+        {triggerEnter ? (
+          <motion.img
+            animate={triggerEnter ? "zoom" : "init"}
+            variants={variants}
+            className="w-full fixed"
+            src={heroImage}
+          />
+        ) : (
+          <motion.video
+            animate={triggerEnter ? "zoom" : "init"}
+            variants={variants}
+            className="w-full fixed"
+            src={heroImage}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        )}
+        <motion.video
           animate={triggerEnter ? "zoom" : "init"}
           variants={variants}
           className="w-full fixed"
           src={heroImage}
-          alt=""
+          autoPlay
+          muted
+          loop
+          playsInline
         />
+
         <div className="absolute top-0 p-4 pt-32 pb-[75vh] space-y-6">
           <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="p-4 rounded-md uppercase font-mono tracking-wider transform -translate-y-24 border-2 border-bpr-green crt bg-black card-overlay fixed animate-pulse z-10 cursor-pointer"
+            >
+              <a className="w-full" href="https://bb3.xyz">
+                <p className="flex tems-center animate-pulse">
+                  <span className="mr-4">💌</span> send a message on
+                  beeper.bb3.xyz
+                </p>
+              </a>
+            </motion.div>
             {triggerEnter ? (
               <>
                 {dummyMessages.map((message: string, i: number) => (
@@ -73,16 +101,7 @@ const Animation = () => {
                 ))}
               </>
             ) : (
-              <>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="w-full p-4 rounded-md uppercase font-mono tracking-wider transform -translate-y-24 border-2 border-bpr-green card-overlay relative animate-pulse z-10 bg-bpr-green/25 cursor-pointer"
-                >
-                  <span className="text-2xl">💌</span> new messages
-                </motion.div>
-              </>
+              <></>
             )}
           </AnimatePresence>
         </div>
