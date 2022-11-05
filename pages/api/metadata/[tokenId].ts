@@ -8,7 +8,7 @@ export default async function handler(
   res.status(200).json({
     description:
       "The BB3 BEEP3R (ETHSF Edition) is a retro-refurbished device from the EARTH ARCHIVE. Its purpose is to aid in interdimensional communication on the blockchain. Use this device to send messages to other BEEP3R device owners. Use with great care!",
-    image: "https://beeper.bb3.xyz/beeper-image.webm",
+    image: "https://beeper.bb3.xyz/beeper-image.gif",
     name: `BB3 - BEEP3R #${tokenId} (ETHSF Edition)`,
     attributes: [
       {
