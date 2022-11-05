@@ -10,6 +10,7 @@ import {
   GetSiweMessageOptions,
 } from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { SessionProvider } from "next-auth/react";
+import { useState } from "react";
 
 const { chains, provider } = configureChains(
   [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
@@ -32,6 +33,12 @@ const getSiweMessageOptions: GetSiweMessageOptions = () => ({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [message, setMessage] = useState("Sign into beeper");
+
+  const getSiweMessageOptions: GetSiweMessageOptions = () => ({
+    statement: message,
+  });
+
   return (
     <WagmiConfig client={wagmiClient}>
       <SessionProvider refetchInterval={0} session={pageProps.session}>
@@ -39,7 +46,11 @@ export default function App({ Component, pageProps }: AppProps) {
           getSiweMessageOptions={getSiweMessageOptions}
         >
           <RainbowKitProvider chains={chains}>
-            <Component {...pageProps} />
+            <Component
+              {...pageProps}
+              message={message}
+              setMessage={setMessage}
+            />
           </RainbowKitProvider>
         </RainbowKitSiweNextAuthProvider>
       </SessionProvider>
