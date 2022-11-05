@@ -27,7 +27,7 @@ type AuthenticatedPageProps = InferGetServerSidePropsType<
   typeof getServerSideProps
 >;
 
-const Activate = ({ address }: AuthenticatedPageProps) => {
+const Activate = ({ address, message, setMessage }: AuthenticatedPageProps) => {
   const router = useRouter();
   const code = router.query["code"];
 
@@ -35,6 +35,8 @@ const Activate = ({ address }: AuthenticatedPageProps) => {
     if (!code) {
       router.push("/");
     }
+
+    setMessage(`Sign into beeper: ${code}`);
   }, [code]);
 
   return <>{address ? <div>{address}</div> : <ConnectButton />}</>;
