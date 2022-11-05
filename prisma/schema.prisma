@@ -15,5 +15,17 @@ model User {
   phone  String @unique
   wallet String? @unique
   code String? @unique
-  verified Boolean? 
+  verified Boolean?
+
+  messagesFrom Message[] @relation("userFrom")
+  messagesTo Message[] @relation("userTo")
+}
+
+model Message {
+  id  Int @id @default(autoincrement())
+  userFrom User @relation(name: "userFrom", fields: [from], references: [id])
+  from Int
+  userTo User? @relation(name: "userTo" ,fields: [to], references: [id])
+  to Int?
+  timestamp DateTime @default(now())
 }
