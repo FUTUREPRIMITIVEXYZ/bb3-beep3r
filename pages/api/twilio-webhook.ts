@@ -113,8 +113,18 @@ export default async function handler(
   const walletBalance = await contract.balanceOf(user.wallet);
 
   // mint token to new wallets
-  if (user.wallet !== null && walletBalance === 0) {
-    // await mintQueue.add("mint", { wallet });
+  if (!user.hasClaimedAirdrop && user.wallet !== null && walletBalance === 0) {
+    await mintQueue.add("mint", { wallet });
+
+    user = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        hasClaimedAirdrop: true,
+      },
+    });
+
     response.message(`✈️ Wallet confirmed. Airdrop incoming...`);
     res.setHeader("Content-Type", "text/xml");
     res.status(200).send(response.toString());
