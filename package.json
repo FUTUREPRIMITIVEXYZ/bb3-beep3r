@@ -20,6 +20,7 @@
     "eslint": "8.26.0",
     "eslint-config-next": "13.0.2",
     "ethers": "^5.4.7",
+    "framer-motion": "^7.6.4",
     "next": "13.0.2",
     "next-auth": "^4.15.1",
     "postcss": "^8.4.18",
