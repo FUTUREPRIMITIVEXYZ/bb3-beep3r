@@ -28,4 +28,5 @@ model Message {
   userTo User? @relation(name: "userTo" ,fields: [to], references: [id])
   to Int?
   timestamp DateTime @default(now())
+  text String @db.VarChar(120)
 }
