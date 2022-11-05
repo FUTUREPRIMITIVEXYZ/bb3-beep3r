@@ -14,4 +14,6 @@ model User {
   id     Int    @id @default(autoincrement())
   phone  String @unique
   wallet String? @unique
+  code String? @unique
+  verified Boolean? 
 }
