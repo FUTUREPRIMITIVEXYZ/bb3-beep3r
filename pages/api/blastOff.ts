@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-// import { Queue } from "bullmq";
-// import IORedis from "ioredis";
+import { Queue } from "bullmq";
+import connection from "../../workers/connection";
 
-// const smsQueue = new Queue("sms", {
-//   connection: new IORedis(process.env.REDIS_URL),
-// });
+const smsQueue = new Queue("sms", {
+  connection: connection,
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,11 +17,10 @@ export default async function handler(
     console.log(baseLog);
 
     if (method === "POST") {
-      // TODO:  send this via twillio
-
-      // smsQueue.add("sms", {
-      //   message: req.body,
-      // });
+      console.log(baseLog + " sending bulk...");
+      smsQueue.add("sendBulk", {
+        message: req.body,
+      });
 
       return res.status(200).send(JSON.stringify({ data: "success" }));
     }

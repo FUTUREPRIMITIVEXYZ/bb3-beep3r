@@ -63,8 +63,6 @@ function BlastOff({ address, authorized }: AuthenticatedPageProps) {
     e.preventDefault();
   };
 
-  console.log({ address, authorized });
-
   return (
     <div className="relative bg-black text-green-500 h-[100vh]">
       <ConnectButton />
