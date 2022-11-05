@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "bpr-green": "#bfd82f",
+        "bpr-green": "#69e263",
       },
     },
   },
