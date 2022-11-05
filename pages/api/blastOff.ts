@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import Twilio from "twilio";
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,6 +12,10 @@ export default async function handler(
     console.log(baseLog);
 
     if (method === "POST") {
+      // send this via twillio
+      const response = new Twilio.twiml.MessagingResponse();
+      response.message(req.body);
+
       return res.status(200).send(JSON.stringify({ data: "success" }));
     }
 
