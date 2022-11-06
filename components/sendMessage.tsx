@@ -1,34 +1,66 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const SendMessage = ({ ...props }) => {
   const [addressInputVisible, setAddressInputVisible] = useState(false);
+  const { register, setValue, handleSubmit } = useForm();
+  const [formData, setFormData] = useState("");
+  const onSubmit = (data: any) => console.log(data);
+
   const handleAudienceSelection = (value: any) => {
     value == "DM"
       ? setAddressInputVisible(true)
       : setAddressInputVisible(false);
   };
+
+  useEffect(() => {
+    const handleMessageAll = () => {
+      setValue("audience", "everyone");
+      setValue("address", "");
+    };
+
+    const handleMessageOne = (addressInput: string) => {
+      setValue("audience", "DM");
+      setAddressInputVisible(true);
+      setValue("address", addressInput);
+    };
+
+    if (props.recipient === "all") {
+      handleMessageAll();
+    }
+
+    if (props.recipient === "random") {
+      handleMessageOne("0x...random");
+    }
+  }, [props.recipient, setValue]);
+
   return (
     <>
-      <form className="bg-greydark text-white rounded-lg p-4 font-mono space-y-8">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-greydark text-white rounded-lg p-4 font-mono space-y-8"
+      >
         <div className="w-full">
           <label htmlFor="audience" className="block text-2xl uppercase">
             To:
           </label>
           <select
+            {...register("audience")}
             onChange={(e) => handleAudienceSelection(e.target.value)}
             id="audience"
             name="audience"
             autoComplete="audience"
             className="h-10 text-xl px-2 rounded-md bg-greylight/25 uppercase w-full"
           >
-            <option>everyone (75 wallets)</option>
+            <option>everyone</option>
             <option>DM</option>
           </select>
           {addressInputVisible ? (
             <input
+              {...register("recipient")}
               type="text"
-              name="adress"
-              id="address"
+              name="recipient"
+              id="recipient"
               className="h-10 mt-4 text-xl px-2 rounded-md bg-greylight/25  w-full"
               placeholder="0x..."
             />
@@ -41,6 +73,7 @@ const SendMessage = ({ ...props }) => {
             Message:
           </label>
           <textarea
+            {...register("message")}
             name="message"
             id="message"
             className="block w-full h-64 rounded-md bg-greylight/25 p-2"
@@ -55,6 +88,7 @@ const SendMessage = ({ ...props }) => {
             send ⭢
           </p>
         </button>
+        <p>{formData}</p>
       </form>
     </>
   );

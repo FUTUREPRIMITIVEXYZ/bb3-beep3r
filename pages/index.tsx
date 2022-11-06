@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import Announcements from "../components/announcements";
+import Convos from "../components/convos";
 import Menu from "../components/menu";
 import SendMessage from "../components/sendMessage";
 import { useEffect } from "react";
@@ -70,11 +71,11 @@ export default function Home() {
                 case 1:
                   return <Announcements />;
                 case 2:
-                  return <SendMessage />;
+                  return <SendMessage recipient={"all"} />;
                 case 3:
-                  return <SendMessage />;
+                  return <SendMessage recipient={"random"} />;
                 case 4:
-                  return null;
+                  return <Convos />;
                 default:
                   return null;
               }
