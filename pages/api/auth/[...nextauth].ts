@@ -11,7 +11,7 @@ const BEEPER_ADDRESS = process.env.BEEPER_ADDRESS || "";
 const prisma = new PrismaClient();
 
 const provider = new ethers.providers.AlchemyProvider(
-  "homestead",
+  process.env.CHAIN,
   process.env.ALCHEMY_API_KEY
 );
 
