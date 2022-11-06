@@ -122,7 +122,7 @@ export default async function handler(
       const response = await prisma.message.create({
         data: {
           from: fromUser.id,
-          to: toUser ? toUser.id : null,
+          to: to === null ? null : toUser?.id,
           text: message,
         },
       });
