@@ -1,25 +1,35 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSigner, useProvider } from "wagmi";
+
+import { sortBy } from "lodash";
 
 const Announcements = ({ ...props }) => {
-  const [loadingMessages, setLoadingMessages] = useState(true);
-  const [publicMessages, setPublicMessages] = useState([]);
+  const provider = useProvider();
 
-  useEffect(() => {
-    async function getUsers() {
+  const { data, status } = useQuery({
+    queryKey: ["announcements"],
+    queryFn: async () => {
       const response = await fetch("/api/message");
       const data = await response.json();
-      data.reverse();
-      setPublicMessages(data);
-      setLoadingMessages(false);
-    }
-    getUsers();
-  }, []);
+
+      const sortedData = sortBy(data, ["sent"]);
+
+      return await Promise.all(
+        data.map(async (message: any) => ({
+          ...message,
+          ens: await provider.lookupAddress(message.userFrom.wallet),
+        }))
+      );
+    },
+  });
+
   return (
     <>
       <AnimatePresence>
-        {loadingMessages ? (
+        {status === "loading" ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -32,7 +42,7 @@ const Announcements = ({ ...props }) => {
           </motion.div>
         ) : (
           <>
-            {publicMessages?.map((message: any, i: number) => (
+            {data?.map((message: any, i: number) => (
               <div key={i} className="space-y-1 mb-6">
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -45,10 +55,12 @@ const Announcements = ({ ...props }) => {
                   <div className="flex items-center space-x-4">
                     <div className="bg-orange-500 w-4 h-4 rounded-full animate-pulse"></div>
                     <p className="text-sm relative z-10">
-                      {`${message.userFrom.wallet.slice(
-                        0,
-                        4
-                      )}...${message.userFrom.wallet.slice(38)}`}
+                      {message.ens
+                        ? message.ens
+                        : `${message.userFrom.wallet.slice(
+                            0,
+                            6
+                          )}...${message.userFrom.wallet.slice(38)}`}
                     </p>
                   </div>
                 </motion.div>
@@ -63,9 +75,9 @@ const Announcements = ({ ...props }) => {
                   <div className="absolute top-0 left-0 w-full h-full bg-blue-500/50 rounded-md rounded-tl-none z-0"></div>
                   <p className="text-sm relative z-10 ">{message.text}</p>
                 </motion.div>
-                <Link href={"/"}>
+                <button onClick={() => props.setModalSelection(2)}>
                   <p className="font-mono uppercase">send message ⮥</p>
-                </Link>
+                </button>
               </div>
             ))}
           </>

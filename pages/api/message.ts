@@ -43,13 +43,7 @@ export default async function handler(
         }
       }
 
-      return res
-        .status(200)
-        .json(
-          messages.sort(
-            (a, b) => a.sent.getMilliseconds() - b.sent.getMilliseconds()
-          )
-        );
+      return res.status(200).json(messages);
     }
   } catch (err) {
     console.error(err);

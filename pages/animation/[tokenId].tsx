@@ -142,9 +142,9 @@ const Animation = () => {
                         <div className="absolute top-0 left-0 w-full h-full bg-blue-500/50 rounded-md rounded-tl-none z-0"></div>
                         <p className="text-sm relative z-10 ">{message.text}</p>
                       </motion.div>
-                      <Link href="https://beepers.bb3.xyz" target="_blank">
-                        <p className="uppercase">send message ⮥</p>
-                      </Link>
+                      {/* <Link href="https://beepers.bb3.xyz" target="_blank"> */}
+                      {/*   <p className="uppercase">send message ⮥</p> */}
+                      {/* </Link> */}
                     </div>
                   ))}
                 </>

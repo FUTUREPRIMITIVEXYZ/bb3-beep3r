@@ -5,10 +5,14 @@ import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useSigner } from "wagmi";
 import { Client, Conversation } from "@xmtp/xmtp-js";
+import { useProvider } from "wagmi";
+import { useQueryClient } from "@tanstack/react-query";
 
 const SendMessage = ({ ...props }) => {
   const { address } = useAccount();
   const router = useRouter();
+  const provider = useProvider();
+  const queryClient = useQueryClient();
 
   const [addressInputVisible, setAddressInputVisible] = useState(false);
   const {
@@ -29,12 +33,35 @@ const SendMessage = ({ ...props }) => {
         if (signer && formData.message) {
           const xmtp = await Client.create(signer);
           try {
-            const conversation = await xmtp.conversations.newConversation(
-              formData.recipient
-                ? formData.recipient
-                : "0x30363923590B9337D8Be5Ea0b030bAC0fD7970a4"
-            );
+            let wallet = null;
+            let conversation = null;
+
+            if (formData.recipient) {
+              if (formData.recipient.includes(".eth")) {
+                try {
+                  wallet = await provider.resolveName(formData.recipient);
+                } catch (e) {
+                  /* handle error */
+                  alert("Invalid .eth");
+                }
+              } else {
+                wallet = formData.recipient;
+              }
+
+              console.log(wallet);
+
+              conversation = await xmtp.conversations.newConversation(wallet);
+            } else {
+              conversation = await xmtp.conversations.newConversation(
+                "0x30363923590B9337D8Be5Ea0b030bAC0fD7970a4"
+              );
+            }
+
             await conversation.send(formData.message);
+            queryClient.invalidateQueries([
+              { queryKey: ["announcements"] },
+              { queryKey: ["convos"] },
+            ]);
           } catch (e) {
             /* handle error */
           }
