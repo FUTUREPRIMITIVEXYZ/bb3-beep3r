@@ -7,10 +7,22 @@ import { useState } from "react";
 import Announcements from "../components/announcements";
 import Menu from "../components/menu";
 import SendMessage from "../components/sendMessage";
+import { useEffect } from "react";
 
 export default function Home() {
   const [modalSelection, setModalSelection] = useState(0);
   const [recipientAddress, setRecipientAddress] = useState("");
+
+  useEffect(() => {
+    async function getUsers() {
+      const response = await fetch("/api/user");
+
+      const data = await response.json();
+
+      console.log({ data });
+    }
+    getUsers();
+  }, []);
 
   return (
     <div>
