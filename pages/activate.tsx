@@ -50,7 +50,7 @@ const Activate = ({ address, setMessage }: AuthenticatedPageProps) => {
     if (status === "authenticated") {
       router.push("/");
     }
-  }, [status]);
+  }, [status, router]);
 
   return <>{address ? <div>{address}</div> : <ConnectButton />}</>;
 };

@@ -66,17 +66,19 @@ const Convos = () => {
                       )}...${convo.peerAddress.slice(-4)}`}
                   </p>
                 </div>
-                {convo?.messages?.slice(0, 10).map((message: any) => (
-                  <div className="flex items-center space-x-4 ml-4">
-                    <p className="text-sm relative z-10">
-                      {`${message.senderAddress.slice(
-                        0,
-                        5
-                      )}...${message.senderAddress.slice(-3)}`}
-                      : {message.content}
-                    </p>
-                  </div>
-                ))}
+                {convo?.messages
+                  ?.slice(0, 10)
+                  .map((message: any, i: number) => (
+                    <div key={i} className="flex items-center space-x-4 ml-4">
+                      <p className="text-sm relative z-10">
+                        {`${message.senderAddress.slice(
+                          0,
+                          5
+                        )}...${message.senderAddress.slice(-3)}`}
+                        : {message.content}
+                      </p>
+                    </div>
+                  ))}
                 {convo?.messages?.length > 10 && (
                   <div className="flex items-center space-x-4 ml-4">
                     <p className="text-sm relative z-10">
