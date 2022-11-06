@@ -17,15 +17,15 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [message, setMessage] = useState("Sign into beeper");
 
-  const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-    statement: message,
-  });
-
   if (router.pathname.split("/")[1] == "animation") {
     return (
       <Component {...pageProps} message={message} setMessage={setMessage} />
     );
   }
+
+  const getSiweMessageOptions: GetSiweMessageOptions = () => ({
+    statement: message,
+  });
 
   const { chains, provider } = configureChains(
     [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
