@@ -14,6 +14,7 @@ export default async function handler(
     console.log(baseLog);
 
     if (method === "GET") {
+      console.log(baseLog + " fetching users...");
       const users = await prisma.user.findMany({
         where: {
           verified: true,
