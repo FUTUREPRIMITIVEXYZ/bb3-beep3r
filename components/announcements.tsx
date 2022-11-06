@@ -15,8 +15,6 @@ const Announcements = ({ ...props }) => {
       const response = await fetch("/api/message");
       const data = await response.json();
 
-      const sortedData = sortBy(data, [(item: any) => new Date(item.sent)]);
-
       return await Promise.all(
         data.map(async (message: any) => ({
           ...message,

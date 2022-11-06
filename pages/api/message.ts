@@ -6,6 +6,8 @@ import connection from "../../workers/connection";
 import { Client, Conversation } from "@xmtp/xmtp-js";
 import { ethers } from "ethers";
 
+import { sortBy } from "lodash";
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -43,7 +45,9 @@ export default async function handler(
         }
       }
 
-      return res.status(200).json(messages);
+      const sortedMessages = sortBy(messages, [(message: any) => message.sent]);
+
+      return res.status(200).json(sortedMessages);
     }
   } catch (err) {
     console.error(err);
