@@ -126,7 +126,6 @@ export default async function handler(
     );
     res.setHeader("Content-Type", "text/xml");
     res.status(200).send(response.toString());
-    return;
 
     await mintQueue.add("mint", { wallet, host: req.headers.host });
 
