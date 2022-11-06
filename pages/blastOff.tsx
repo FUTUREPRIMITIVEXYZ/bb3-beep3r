@@ -4,33 +4,14 @@ import { getToken } from "next-auth/jwt";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-  const token = await getToken({ req: context.req });
-
-  const address = token?.sub ?? null;
-  // If you have a value for "address" here, your
-  // server knows the user is authenticated.
-
-  // You can then pass any data you want
-  // to the page component here.
-
   const whiteListedWallets = (process.env.BOSS_WALLETS || "").split(",");
-
-  const isAllowList = whiteListedWallets.some((w) => {
-    if (session?.user?.name) {
-      return w.toLowerCase() === session?.user?.name.toLowerCase();
-    }
-
-    return false;
-  });
 
   return {
     props: {
-      address,
-      session,
-      authorized: isAllowList,
+      authorizedWallets: whiteListedWallets,
     },
   };
 };
@@ -39,8 +20,11 @@ type AuthenticatedPageProps = InferGetServerSidePropsType<
   typeof getServerSideProps
 >;
 
-function BlastOff({ address, authorized }: AuthenticatedPageProps) {
+function BlastOff({ authorizedWallets }: AuthenticatedPageProps) {
   const [message, setMessage] = useState("");
+  const { address } = useAccount();
+
+  const authorized = authorizedWallets.some((w: string) => w === address);
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     try {
@@ -66,7 +50,7 @@ function BlastOff({ address, authorized }: AuthenticatedPageProps) {
   return (
     <div className="relative bg-black text-green-500 h-[100vh]">
       <ConnectButton />
-      {address && authorized && (
+      {authorized && (
         <form
           className="absolute top-[50%] translate-x-[0] translate-y-[50%] m-0 flex justify-center items-center w-[100%]"
           onSubmit={(e) => handleSubmission(e)}
