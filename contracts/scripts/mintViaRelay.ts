@@ -22,7 +22,9 @@ async function main() {
     speed: "fast",
   });
 
-  const mintTx = await beeper.connect(signer).safeMint("<WALLET HERE>");
+  const mintTx = await beeper
+    .connect(signer)
+    .safeMint("0xceb9Ad07771F6A83FA15a7FEEf83D6Bd2Ecb53c8");
 
   console.log(mintTx);
 
