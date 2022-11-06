@@ -121,12 +121,6 @@ export default async function handler(
   if (!user.hasClaimedAirdrop && user.wallet !== null && walletBalance === 0) {
     console.log("triggering mint flow for ", user.phone, user.wallet);
 
-    response.message(
-      `Wallet confirmed. Further instructions will be broadcast.`
-    );
-    res.setHeader("Content-Type", "text/xml");
-    res.status(200).send(response.toString());
-
     await mintQueue.add("mint", { wallet, host: req.headers.host });
 
     user = await prisma.user.update({
