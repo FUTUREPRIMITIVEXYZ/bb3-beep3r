@@ -70,11 +70,10 @@ const Convos = () => {
                 {convo?.messages?.slice(0, 10).map((message: any) => (
                   <div className="flex items-center space-x-4 ml-4">
                     <p className="text-sm relative z-10">
-                      {convo.ens ||
-                        `${message.senderAddress.slice(
-                          0,
-                          5
-                        )}...${message.senderAddress.slice(-3)}`}
+                      {`${message.senderAddress.slice(
+                        0,
+                        5
+                      )}...${message.senderAddress.slice(-3)}`}
                       : {message.content}
                     </p>
                   </div>
