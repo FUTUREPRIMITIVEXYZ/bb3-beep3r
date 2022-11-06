@@ -21,9 +21,7 @@ export default function Home() {
       </Head>
       <main className="w-full h-screen overflow-hidden bg-black text-bpr-green relative">
         <div className="fixed bottom-0 z-20 w-full flex flex-col items-center p-4 bg-gradient-to-t from-black">
-          {modalSelection == 0 ? (
-            <></>
-          ) : (
+          {modalSelection == 1 ? (
             <div
               onClick={() => setModalSelection(2)}
               className="w-fit h-12 bg-greydark mb-2 flex justify-center items-center"
@@ -32,6 +30,8 @@ export default function Home() {
                 new message
               </p>
             </div>
+          ) : (
+            <></>
           )}
 
           <div className="w-full">
@@ -60,7 +60,7 @@ export default function Home() {
                 case 2:
                   return <SendMessage />;
                 case 3:
-                  return null;
+                  return <SendMessage />;
                 case 4:
                   return null;
                 default:

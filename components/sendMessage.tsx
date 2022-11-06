@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const SendMessage = () => {
+const SendMessage = ({ ...props }) => {
   const [addressInputVisible, setAddressInputVisible] = useState(false);
   const handleAudienceSelection = (value: any) => {
     value == "DM"
@@ -47,6 +47,14 @@ const SendMessage = () => {
             placeholder="I'm at EthGlobal SF rn, wyd?"
           />
         </div>
+        <button
+          type="submit"
+          className="w-fit h-12 bg-greydark mb-2 flex justify-center items-center"
+        >
+          <p className="w-full h-full bg-greylight/25 px-12 pt-2 text-2xl text-white font-mono uppercase cursor-pointer">
+            send ⭢
+          </p>
+        </button>
       </form>
     </>
   );
