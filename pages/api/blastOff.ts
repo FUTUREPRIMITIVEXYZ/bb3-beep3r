@@ -2,6 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Queue } from "bullmq";
 import connection from "../../workers/connection";
 import { getSession } from "next-auth/react";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const smsQueue = new Queue("sms", {
   connection: connection,
@@ -40,8 +43,25 @@ export default async function handler(
     if (method === "POST") {
       console.log(baseLog + " sending bulk...");
       smsQueue.add("sendBulk", {
-        message: req.body,
+        message: `${req.body} - MIZUNA 💖`,
       });
+
+      const bossUser = await prisma.user.findUnique({
+        where: { wallet: "0x13bF66566B4Ad9dF293C75af25ffEBF552Af86Ea" },
+      });
+
+      if (!bossUser)
+        return res.status(400).send("No boss user... add they/them in.");
+
+      const response = await prisma.message.create({
+        data: {
+          from: bossUser.id,
+          to: null,
+          text: req.body,
+        },
+      });
+
+      if (!response) res.status(400).send("failed to send message");
 
       return res.status(200).send(JSON.stringify({ data: "success" }));
     }
