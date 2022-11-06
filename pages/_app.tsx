@@ -66,19 +66,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <SessionProvider refetchInterval={0} session={pageProps.session}>
+      {/* <SessionProvider refetchInterval={0} session={pageProps.session}>
         <RainbowKitSiweNextAuthProvider
           getSiweMessageOptions={getSiweMessageOptions}
-        >
-          <RainbowKitProvider chains={chains}>
-            <Component
-              {...pageProps}
-              message={message}
-              setMessage={setMessage}
-            />
-          </RainbowKitProvider>
-        </RainbowKitSiweNextAuthProvider>
-      </SessionProvider>
+        > */}
+      <RainbowKitProvider chains={chains}>
+        <Component {...pageProps} message={message} setMessage={setMessage} />
+      </RainbowKitProvider>
+      {/* </RainbowKitSiweNextAuthProvider>
+      </SessionProvider> */}
     </WagmiConfig>
   );
 }

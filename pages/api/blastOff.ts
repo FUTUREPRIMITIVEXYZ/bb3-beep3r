@@ -22,17 +22,19 @@ export default async function handler(
 
     console.log(baseLog + " checking authorization...");
 
-    const session = await getSession({ req });
-    if (session === null) {
-      return res.status(401).send("not authenticated");
-    }
+    const body = JSON.parse(req.body);
+    const { message, wallet } = body;
 
-    const sessionAddress = session?.user?.name || "";
+    // const session = await getSession({ req });
+    // if (session === null) {
+    //   return res.status(401).send("not authenticated");
+    // }
+
+    // const sessionAddress = session?.user?.name || "";
     const bossList = process.env.BOSS_WALLETS || "";
-
     const isBoss = bossList
       .split(",")
-      .some((w) => w.toLowerCase() === sessionAddress.toLocaleLowerCase());
+      .some((w) => w.toLowerCase() === wallet.toLowerCase());
 
     if (!isBoss) {
       return res.status(401).send("not authenticated");
@@ -43,7 +45,7 @@ export default async function handler(
     if (method === "POST") {
       console.log(baseLog + " sending bulk...");
       smsQueue.add("sendBulk", {
-        message: req.body + " - MIZUNA 💖",
+        message: message + " - MIZUNA 💖",
       });
 
       const user = await prisma.user.findUnique({
@@ -53,7 +55,7 @@ export default async function handler(
       if (user)
         await prisma.message.create({
           data: {
-            text: req.body + " - MIZUNA 💖",
+            text: message + " - MIZUNA 💖",
             to: null,
             from: user.id,
           },
