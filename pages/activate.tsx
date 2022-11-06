@@ -1,5 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -45,17 +45,12 @@ const Activate = ({ address, setMessage }: AuthenticatedPageProps) => {
     openConnectModal && openConnectModal();
   }, [openConnectModal, address]);
 
+  const { status } = useSession();
   useEffect(() => {
-    async function monitorAccount() {
-      const session = await getSession();
-
-      if (session?.user?.name) {
-        router.push("/");
-      }
+    if (status === "authenticated") {
+      router.push("/");
     }
-
-    monitorAccount();
-  });
+  }, [status]);
 
   return <>{address ? <div>{address}</div> : <ConnectButton />}</>;
 };
