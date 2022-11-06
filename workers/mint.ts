@@ -9,6 +9,7 @@ import {
 import { BigNumber, ethers } from "ethers";
 import artifact from "../contracts/artifacts/src/BEEPER.sol/BEEPER.json";
 import { Queue } from "bullmq";
+import crypto from "crypto";
 
 const smsQueue = new Queue("sms", { connection });
 
@@ -16,7 +17,12 @@ const prisma = new PrismaClient();
 
 type MintJobData = {
   wallet: string;
+  host: string;
 };
+
+function generateUniqueCode() {
+  return crypto.randomBytes(4).toString("hex");
+}
 
 const getRelayCredentials = () => {
   if (process.env.RAILWAY_ENVIRONMENT === "production") {
@@ -46,7 +52,7 @@ const worker = new Worker<MintJobData>(
     console.log(job.name, job.data);
 
     try {
-      const user = await prisma.user.findUnique({
+      let user = await prisma.user.findUnique({
         where: {
           wallet: job.data.wallet,
         },
@@ -80,11 +86,21 @@ const worker = new Worker<MintJobData>(
 
         const tokenId = result.events.at(0).args.tokenId.toNumber();
 
+        const code = generateUniqueCode();
+        const activateUrl = `https://${job.data.host}/activate?code=${code}`;
+
+        user = await prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            code,
+          },
+        });
+
         await smsQueue.add("sendSingle", {
           phone: user.phone,
-          message: `Airdrop complete. Check your wallet: ${getOpenseaURI(
-            tokenId
-          )}`,
+          message: `Airdrop complete (check your wallet). Activate your beeper here: ${activateUrl}`,
         });
       }
     } catch (e) {

@@ -41,11 +41,12 @@ const worker = new Worker<SMSJobData>(
       await Promise.all(
         allUsers.map(async (user) => {
           try {
-            const result = await client.messages.create({
+            const payload: any = {
               body: job.data.message,
               from: process.env.TWILIO_PHONE_NUMBER,
               to: user.phone,
-            });
+            };
+            const result = await client.messages.create(payload);
             console.log(result);
           } catch (e) {
             /* handle error */
