@@ -42,7 +42,7 @@ export default async function handler(
         }
       }
 
-      return res.status(200).json(messages);
+      return res.status(200).json(messages.reverse());
     }
   } catch (err) {
     console.error(err);

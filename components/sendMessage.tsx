@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useSigner } from "wagmi";
+import { Client, Conversation } from "@xmtp/xmtp-js";
 
 const SendMessage = ({ ...props }) => {
   const { address } = useAccount();
@@ -11,23 +13,28 @@ const SendMessage = ({ ...props }) => {
   const [addressInputVisible, setAddressInputVisible] = useState(false);
   const { register, setValue, handleSubmit } = useForm();
   const [formData, setFormData] = useState("");
-  const onSubmit = (formData: any) => {
-    console.log(formData);
-    async function postMessage() {
-      const request: any = await fetch("/api/message", {
-        method: "POST",
-        body: JSON.stringify({
-          message: formData.message,
-          from: address,
-          to: null,
-        }),
+
+  const { data: signer, isError, isLoading } = useSigner();
+  const [xmtpClient, setXmtpClient] = useState<Client>();
+
+  const onSubmit = useCallback(
+    (formData: any) => {
+      console.log(formData);
+      async function postMessage() {
+        if (signer && formData.message) {
+          const xmtp = await Client.create(signer);
+          const conversation = await xmtp.conversations.newConversation(
+            "0x30363923590B9337D8Be5Ea0b030bAC0fD7970a4"
+          );
+          await conversation.send(formData.message);
+        }
+      }
+      postMessage().then(() => {
+        props.setModalSelection(1);
       });
-      const data = await request.json();
-    }
-    postMessage().then(() => {
-      props.setModalSelection(1);
-    });
-  };
+    },
+    [signer]
+  );
 
   const handleAudienceSelection = (value: any) => {
     value == "DM"
@@ -106,14 +113,19 @@ const SendMessage = ({ ...props }) => {
                 placeholder="I'm at EthGlobal SF rn, wyd?"
               />
             </div>
-            <button
-              type="submit"
-              className="w-fit h-12 bg-greydark mb-2 flex justify-center items-center"
-            >
-              <p className="w-full h-full bg-greylight/25 px-12 pt-2 text-2xl text-white font-mono uppercase cursor-pointer">
-                send ⭢
-              </p>
-            </button>
+
+            {signer ? (
+              <button
+                type="submit"
+                className="w-fit h-12 bg-greydark mb-2 flex justify-center items-center"
+              >
+                <p className="w-full h-full bg-greylight/25 px-12 pt-2 text-2xl text-white font-mono uppercase cursor-pointer">
+                  send ⭢
+                </p>
+              </button>
+            ) : (
+              <ConnectButton />
+            )}
             <p>{formData}</p>
           </form>
         </>
