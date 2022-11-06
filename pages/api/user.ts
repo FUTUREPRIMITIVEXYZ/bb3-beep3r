@@ -20,6 +20,10 @@ export default async function handler(
           verified: true,
           hasClaimedAirdrop: true,
         },
+        select: {
+          id: true,
+          wallet: true,
+        },
       });
 
       return res.status(200).send(users);
