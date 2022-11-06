@@ -26,8 +26,8 @@ async function main() {
   });
 
   const credentials = {
-    apiKey: process.env.GOERLI_RELAY_API_KEY!,
-    apiSecret: process.env.GOERLI_RELAY_SECRET_KEY!,
+    apiKey: process.env.MAINNET_RELAY_API_KEY!,
+    apiSecret: process.env.MAINNET_RELAY_SECRET_KEY!,
   };
   const provider = new DefenderRelayProvider(credentials);
   const signer = new DefenderRelaySigner(credentials, provider, {

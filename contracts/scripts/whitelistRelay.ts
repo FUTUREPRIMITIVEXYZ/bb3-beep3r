@@ -13,7 +13,7 @@ async function main() {
     process.env.BEEPER_ADDRESS!
   );
 
-  const relayAddress = process.env.GOERLI_RELAY_ADDRESS!;
+  const relayAddress = process.env.MAINNET_RELAY_ADDRESS!;
 
   // const credentials = {
   //   apiKey: process.env.GOERLI_RELAY_API_KEY!,

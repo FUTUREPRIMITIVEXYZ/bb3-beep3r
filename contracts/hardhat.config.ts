@@ -12,7 +12,12 @@ const config: HardhatUserConfig = {
   networks: {
     goerli: {
       url: "https://eth-goerli.g.alchemy.com/v2/5p3QRor42JcFlS0GVX9XGrXO2Db4fNBg",
-      accounts: [process.env.GOERLI_PRIVATE_KEY!],
+      accounts: [process.env.PRIVATE_KEY!],
+      timeout: 1000000,
+    },
+    mainnet: {
+      url: "https://eth-mainnet.g.alchemy.com/v2/DKYjjDG6x9IEbj_eXNe2vN4H--D7YWq5",
+      accounts: [process.env.PRIVATE_KEY!],
       timeout: 1000000,
     },
   },

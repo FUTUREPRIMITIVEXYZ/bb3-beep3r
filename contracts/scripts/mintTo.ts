@@ -9,9 +9,7 @@ async function main() {
 
   console.log("minting...");
 
-  const mintTx = await beeper.safeMint(
-    "0xC3eb8b7b5dD7a338Af0B8c692c378Fca5285aE72"
-  );
+  const mintTx = await beeper.safeMint("<WALLET HERE>");
 
   console.log(mintTx);
 

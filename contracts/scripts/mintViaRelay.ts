@@ -14,17 +14,15 @@ async function main() {
   );
 
   const credentials = {
-    apiKey: process.env.GOERLI_RELAY_API_KEY!,
-    apiSecret: process.env.GOERLI_RELAY_SECRET_KEY!,
+    apiKey: process.env.MAINNET_RELAY_API_KEY!,
+    apiSecret: process.env.MAINNET_RELAY_SECRET_KEY!,
   };
   const provider = new DefenderRelayProvider(credentials);
   const signer = new DefenderRelaySigner(credentials, provider, {
     speed: "fast",
   });
 
-  const mintTx = await beeper
-    .connect(signer)
-    .safeMint("0xC3eb8b7b5dD7a338Af0B8c692c378Fca5285aE72");
+  const mintTx = await beeper.connect(signer).safeMint("<WALLET HERE>");
 
   console.log(mintTx);
 

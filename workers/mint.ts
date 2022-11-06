@@ -26,14 +26,9 @@ function generateUniqueCode() {
 
 const getRelayCredentials = () => {
   if (process.env.RAILWAY_ENVIRONMENT === "production") {
-    // TODO: setup mainnet
-    // return {
-    //   apiKey: process.env.MAINNET_RELAY_API_KEY!,
-    //   apiSecret: process.env.MAINNET_RELAY_SECRET_KEY!,
-    // };
     return {
-      apiKey: process.env.GOERLI_RELAY_API_KEY!,
-      apiSecret: process.env.GOERLI_RELAY_SECRET_KEY!,
+      apiKey: process.env.MAINNET_RELAY_API_KEY!,
+      apiSecret: process.env.MAINNET_RELAY_SECRET_KEY!,
     };
   } else {
     return {
