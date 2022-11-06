@@ -2,6 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
+import { Queue } from "bullmq";
+import connection from "../../workers/connection";
+
+const postQueue = new Queue("post", { connection });
 
 const prisma = new PrismaClient();
 
@@ -95,6 +99,13 @@ export default async function handler(
       const message = body.message;
       const from = body.from;
       const to = body.to;
+
+      if (!to) {
+        await postQueue.add("postToLens", {
+          content: message,
+          wallet: from,
+        });
+      }
 
       console.log({ from, to, message });
 
