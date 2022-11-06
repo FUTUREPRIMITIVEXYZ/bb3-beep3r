@@ -122,7 +122,7 @@ export default async function handler(
     console.log("triggering mint flow for ", user.phone, user.wallet);
 
     response.message(
-      `✈️ Wallet confirmed. AFurther instructions will be broadcast.`
+      `Wallet confirmed. Further instructions will be broadcast.`
     );
     res.setHeader("Content-Type", "text/xml");
     res.status(200).send(response.toString());
