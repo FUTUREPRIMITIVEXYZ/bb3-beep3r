@@ -1,14 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { motion } from "framer-motion";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import Announcements from "../components/announcements";
 import Convos from "../components/convos";
 import Menu from "../components/menu";
 import SendMessage from "../components/sendMessage";
-import { useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function Home() {
