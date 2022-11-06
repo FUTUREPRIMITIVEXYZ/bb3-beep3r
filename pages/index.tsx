@@ -21,8 +21,8 @@ export default function Home() {
         <meta name="description" content="beepbeepbeep" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="w-full h-screen overflow-hidden bg-black text-bpr-green relative">
-        <div className="fixed bottom-0 z-20 w-full flex flex-col items-center p-4 bg-gradient-to-t from-black">
+      <main className="w-full max-w-[500px] h-screen overflow-hidden bg-black text-bpr-green relative">
+        <div className="fixed bottom-0 z-20 w-full max-w-[500px] flex flex-col items-center p-4 bg-gradient-to-t from-black">
           {modalSelection == 1 ? (
             <div
               onClick={() => setModalSelection(2)}
