@@ -38,7 +38,7 @@ const Convos = () => {
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ["convos"] });
-  }, [signer]);
+  }, [signer, queryClient]);
 
   console.log(convosQuery.data);
 

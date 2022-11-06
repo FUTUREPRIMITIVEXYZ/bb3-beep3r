@@ -71,7 +71,7 @@ const SendMessage = ({ ...props }) => {
         props.setModalSelection(1);
       });
     },
-    [signer]
+    [props, provider, signer, queryClient]
   );
 
   const handleAudienceSelection = (value: any) => {

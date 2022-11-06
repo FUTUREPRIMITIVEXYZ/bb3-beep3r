@@ -38,7 +38,7 @@ const Activate = ({ address, setMessage }: AuthenticatedPageProps) => {
     }
 
     setMessage(`Sign into beeper: ${code}`);
-  }, [code]);
+  }, [code, router, setMessage]);
 
   useEffect(() => {
     console.log("opening...", openConnectModal);
