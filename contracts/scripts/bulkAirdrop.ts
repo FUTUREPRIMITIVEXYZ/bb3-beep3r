@@ -39,7 +39,17 @@ async function main() {
       // const mintTx = await beeper
       //   .connect(signer)
       //   .safeMint(user.wallet);
+
       console.log(user.wallet);
+
+      // await prisma.user.update({
+      //   where: {
+      //     id: user.id,
+      //   },
+      //   data: {
+      //     hasClaimedAirdrop: true,
+      //   },
+      // });
     })
   );
 
