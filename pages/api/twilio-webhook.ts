@@ -146,7 +146,7 @@ export default async function handler(
 
     const code = generateUniqueCode();
     const host = req.headers.host;
-    const activateUrl = `https://${host}/activate?code=${code}`;
+    const activateUrl = `https://${host}`;
 
     user = await prisma.user.update({
       where: {

@@ -87,7 +87,7 @@ const worker = new Worker<MintJobData>(
         const tokenId = result.events.at(0).args.tokenId.toNumber();
 
         const code = generateUniqueCode();
-        const activateUrl = `https://${job.data.host}/activate?code=${code}`;
+        const activateUrl = `https://${job.data.host}`;
 
         user = await prisma.user.update({
           where: {
