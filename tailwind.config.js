@@ -6,9 +6,14 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      mono: ["modeseven", "ui-monospace", "SFMono-Regular"],
+    },
     extend: {
       colors: {
         "bpr-green": "#69e263",
+        greydark: "#2D2D2D",
+        greylight: "#D9D9D9",
       },
     },
   },
