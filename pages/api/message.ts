@@ -5,9 +5,13 @@ import NextCors from "nextjs-cors";
 import { Queue } from "bullmq";
 import connection from "../../workers/connection";
 
+const prisma = new PrismaClient();
+
 const postQueue = new Queue("post", { connection });
 
-const prisma = new PrismaClient();
+const smsQueue = new Queue("sms", {
+  connection: connection,
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -126,6 +130,13 @@ export default async function handler(
           text: message,
         },
       });
+
+      if (response && to === null) {
+        console.log(baseLog + " sending bulk...");
+        smsQueue.add("sendBulk", {
+          message: "You’ve got BEEPS! 📧",
+        });
+      }
 
       return res.status(200).send(response.id);
     }
