@@ -20,6 +20,9 @@ export default async function handler(
       if (!wallet) {
         console.log(baseLog + " fetching all messages...");
         const messages = await prisma.message.findMany({
+          where: {
+            to: null,
+          },
           include: {
             userFrom: {
               select: {
@@ -46,7 +49,12 @@ export default async function handler(
       console.log(baseLog + "user found, fetching messages...");
 
       const response = await prisma.message.findMany({
-        where: { to: user.id },
+        where: {
+          to: user.id,
+          OR: {
+            from: user.id,
+          },
+        },
         include: {
           userFrom: {
             select: {
