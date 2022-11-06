@@ -1,43 +1,51 @@
+import { useState } from "react";
+
 const SendMessage = () => {
+  const [addressInputVisible, setAddressInputVisible] = useState(false);
+  const handleAudienceSelection = (value: any) => {
+    value == "DM"
+      ? setAddressInputVisible(true)
+      : setAddressInputVisible(false);
+  };
   return (
     <>
-      <form className="bg-white/25 rounded-lg p-4">
-        <div>
-          <label
-            htmlFor="message"
-            className="block font-medium text-white text-3xl uppercase"
-          >
+      <form className="bg-greydark text-white rounded-lg p-4 font-mono space-y-8">
+        <div className="w-full">
+          <label htmlFor="audience" className="block text-2xl uppercase">
             To:
           </label>
-          <div className="relative mt-1 rounded-md shadow-sm">
-            <div className="w-full">
-              <label htmlFor="country" className="sr-only">
-                Country
-              </label>
-              <select
-                id="audience"
-                name="audience"
-                autoComplete="audience"
-                className="h-full rounded-md border border-bpr-green py-0 pl-3 pr-7 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              >
-                <option>message all</option>
-                <option>DM</option>
-              </select>
-              <input
-                type="text"
-                name="adress"
-                id="address"
-                className="h-full rounded-md border border-bpr-green py-0 pl-3 pr-7 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                placeholder="0x..."
-              />
-            </div>
-            <textarea
-              name="message"
-              id="message"
-              className="block w-full rounded-md border border-bpr-green bg-black pl-16 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="send a message"
+          <select
+            onChange={(e) => handleAudienceSelection(e.target.value)}
+            id="audience"
+            name="audience"
+            autoComplete="audience"
+            className="h-10 text-xl px-2 rounded-md bg-greylight/25 uppercase w-full"
+          >
+            <option>everyone (75 wallets)</option>
+            <option>DM</option>
+          </select>
+          {addressInputVisible ? (
+            <input
+              type="text"
+              name="adress"
+              id="address"
+              className="h-10 mt-4 text-xl px-2 rounded-md bg-greylight/25  w-full"
+              placeholder="0x..."
             />
-          </div>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div>
+          <label htmlFor="message" className="block text-3xl uppercase">
+            Message:
+          </label>
+          <textarea
+            name="message"
+            id="message"
+            className="block w-full h-64 rounded-md bg-greylight/25 p-2"
+            placeholder="I'm at EthGlobal SF rn, wyd?"
+          />
         </div>
       </form>
     </>

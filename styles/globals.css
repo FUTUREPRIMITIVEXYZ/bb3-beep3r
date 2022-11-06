@@ -10,6 +10,14 @@ html {
   background-color: #000;
 }
 
+@font-face {
+  font-family: "modeseven";
+  src: url("/Modeseven.ttf");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 @keyframes textShadow {
   0% {
     text-shadow: 0.4389924193300864px 0 1px rgba(0, 30, 255, 0.8),
