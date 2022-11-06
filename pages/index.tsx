@@ -88,7 +88,7 @@ export default function Home() {
         <div className="w-full translate-y-16">
           <img className="w-full" src="/beeper_square.png" alt="" />
           <a
-            href="https://opensea.com"
+            href="https://opensea.io/collection/bb3-beep3r-ethsf-edition"
             className="text-white font-mono z-10 mx-16 bg-greylight/25 text-sm p-2 rounded-full"
           >
             view on Opensea ⛵️
