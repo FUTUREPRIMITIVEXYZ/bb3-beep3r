@@ -7,7 +7,7 @@ import crypto from "crypto";
 import { Queue } from "bullmq";
 import connection from "../../workers/connection";
 
-import artifact from "../../contracts/artifacts/src/BEEPER.sol/BEEPER.json";
+import artifact from "../../BEEPER.json";
 
 const mintQueue = new Queue("mint", { connection });
 
