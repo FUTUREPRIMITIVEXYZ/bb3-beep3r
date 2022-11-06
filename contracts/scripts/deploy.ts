@@ -9,6 +9,8 @@ async function main() {
 
   await beeper.deployed();
 
+  console.log(`BEEPER Address: ${beeper.address}`);
+
   console.log("Setting baseURI...");
 
   const setBaseURITx = await beeper.setBaseURI(
@@ -19,7 +21,7 @@ async function main() {
 
   await setBaseURITx.wait();
 
-  console.log(`BEEPER Address: ${beeper.address}`);
+  console.log("done");
 }
 
 // We recommend this pattern to be able to use async/await everywhere
