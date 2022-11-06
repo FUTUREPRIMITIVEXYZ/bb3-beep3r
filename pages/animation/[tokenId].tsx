@@ -84,7 +84,12 @@ const Animation = () => {
               exit={{ opacity: 0 }}
               className="p-4 rounded-md uppercase font-mono tracking-wider transform -translate-y-24 border-2 border-bpr-green crt bg-black card-overlay fixed animate-pulse z-10 cursor-pointer"
             >
-              <a className="w-full" href="https://bb3.xyz">
+              <a
+                className="w-full"
+                href="beepers.bb3.xyz"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <p className="flex tems-center animate-pulse">
                   <span className="mr-4">💌</span> send a message on
                   beeper.bb3.xyz
