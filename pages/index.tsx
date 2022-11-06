@@ -83,7 +83,7 @@ export default function Home() {
             </p>
           </a>
           <div className="mt-4">
-            <ConnectButton />
+            <ConnectButton chainStatus="none" />
           </div>
         </div>
         <div className="w-full translate-y-16">

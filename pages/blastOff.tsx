@@ -50,7 +50,7 @@ function BlastOff({ authorizedList }: AuthenticatedPageProps) {
 
   return (
     <div className="relative bg-black text-green-500 h-[100vh]">
-      <ConnectButton />
+      <ConnectButton chainStatus="none" />
       {address && authorizedList.some((w: string) => w === address) && (
         <form
           className="absolute top-[50%] translate-x-[0] translate-y-[50%] m-0 flex justify-center items-center w-[100%]"

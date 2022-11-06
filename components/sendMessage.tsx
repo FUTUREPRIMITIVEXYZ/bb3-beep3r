@@ -77,7 +77,7 @@ const SendMessage = ({ ...props }) => {
   return (
     <>
       {!address ? (
-        <ConnectButton label="Connect account" />
+        <ConnectButton label="Connect account" chainStatus="none" />
       ) : (
         <>
           <form
@@ -135,7 +135,7 @@ const SendMessage = ({ ...props }) => {
                 </p>
               </button>
             ) : (
-              <ConnectButton />
+              <ConnectButton chainStatus="none" />
             )}
             <p>{formData}</p>
           </form>
