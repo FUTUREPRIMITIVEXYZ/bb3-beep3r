@@ -8,6 +8,7 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721BurnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/common/ERC2981Upgradeable.sol";
 
 contract BEEPER is
     Initializable,
@@ -15,7 +16,8 @@ contract BEEPER is
     PausableUpgradeable,
     OwnableUpgradeable,
     AccessControlUpgradeable,
-    ERC721BurnableUpgradeable
+    ERC721BurnableUpgradeable,
+    ERC2981Upgradeable
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -33,6 +35,7 @@ contract BEEPER is
         __Ownable_init();
         __AccessControl_init();
         __ERC721Burnable_init();
+        __ERC2981_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
@@ -48,6 +51,13 @@ contract BEEPER is
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         baseURI = newURI;
+    }
+
+    function setRoyalty(address receiver, uint96 feeNumerator)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _setDefaultRoyalty(receiver, feeNumerator);
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
@@ -76,7 +86,11 @@ contract BEEPER is
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721Upgradeable, AccessControlUpgradeable)
+        override(
+            ERC721Upgradeable,
+            ERC2981Upgradeable,
+            AccessControlUpgradeable
+        )
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
