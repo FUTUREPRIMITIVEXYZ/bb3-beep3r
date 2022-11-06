@@ -57,13 +57,13 @@ async function main() {
             // smsQueue.add("sendBulk", {
             //   message: message.content + " - MIZUNA 💖",
             // });
-            // await smsQueue.add("sendBulk", {
-            //   message: "You’ve got BEEPS! 📧",
-            // });
+            await smsQueue.add("sendBulk", {
+              message: "You’ve got BEEPS! 📧",
+            });
           } else {
-            // await smsQueue.add("sendBulk", {
-            //   message: "You’ve got BEEPS! 📧",
-            // });
+            await smsQueue.add("sendBulk", {
+              message: "You’ve got BEEPS! 📧",
+            });
           }
         }
       }
