@@ -37,12 +37,19 @@ export default async function handler(
                 wallet: msg.senderAddress,
               },
               text: msg.content,
+              sent: msg.sent,
             });
           }
         }
       }
 
-      return res.status(200).json(messages.reverse());
+      return res
+        .status(200)
+        .json(
+          messages.sort(
+            (a, b) => a.sent.getMilliseconds() - b.sent.getMilliseconds()
+          )
+        );
     }
   } catch (err) {
     console.error(err);
