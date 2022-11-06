@@ -23,7 +23,6 @@ const Animation = () => {
     async function getUsers() {
       const response = await fetch("/api/message");
       const data = await response.json();
-      data.reverse();
       setPublicMessages(data);
     }
     getUsers();
