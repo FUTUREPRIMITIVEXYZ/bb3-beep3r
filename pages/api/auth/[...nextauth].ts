@@ -106,14 +106,14 @@ export default async function auth(req: any, res: any) {
 
           const [, code] = tuple;
 
-          console.log("CHECKING CONTRACT...");
-          const balance = await contract.balanceOf(result.data.address);
-          const balanceNumber = balance.toNumber();
+          // console.log("CHECKING CONTRACT...");
+          // const balance = await contract.balanceOf(result.data.address);
+          // const balanceNumber = balance.toNumber();
 
-          if (!balanceNumber) {
-            console.log(`Does not have beeper: ${result.data.address}`);
-            return false;
-          }
+          // if (!balanceNumber) {
+          //   console.log(`Does not have beeper: ${result.data.address}`);
+          //   return false;
+          // }
 
           // TODO: check if code & wallet are the same
           console.log("UPDATING USER...");

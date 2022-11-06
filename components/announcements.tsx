@@ -3,16 +3,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Announcements = ({ ...props }) => {
-  const dummyMessages = [
-    "wealth is of the heart and mind, not the pocket",
-    "wealth is of the heart and mind, not the pocket",
-    "wealth is of the heart and mind, not the pocket",
-    "wealth is of the heart and mind, not the pocket",
-    "wealth is of the heart and mind, not the pocket",
-    "wealth is of the heart and mind, not the pocket",
-    "wealth is of the heart and mind, not the pocket",
-  ];
-
   const [loadingMessages, setLoadingMessages] = useState(true);
   const [publicMessages, setPublicMessages] = useState([]);
 
@@ -20,6 +10,7 @@ const Announcements = ({ ...props }) => {
     async function getUsers() {
       const response = await fetch("/api/message");
       const data = await response.json();
+      data.reverse();
       setPublicMessages(data);
       setLoadingMessages(false);
     }
@@ -54,7 +45,10 @@ const Announcements = ({ ...props }) => {
                   <div className="flex items-center space-x-4">
                     <div className="bg-orange-500 w-4 h-4 rounded-full animate-pulse"></div>
                     <p className="text-sm relative z-10">
-                      {message.userFrom.wallet}
+                      {`${message.userFrom.wallet.slice(
+                        0,
+                        4
+                      )}...${message.userFrom.wallet.slice(38)}`}
                     </p>
                   </div>
                 </motion.div>
