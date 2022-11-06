@@ -1,9 +1,14 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Client, Conversation } from "@xmtp/xmtp-js";
+import { useSigner } from "wagmi";
 
 const Convos = () => {
   const [allUsers, setAllUsers] = useState([]);
+  const { data: signer, isError, isLoading } = useSigner();
+  const [xmtpClient, setXmtpClient] = useState<Client>();
+  const [conversations, setConversations] = useState<Conversation[]>();
 
   useEffect(() => {
     async function getUsers() {
@@ -13,14 +18,36 @@ const Convos = () => {
       setAllUsers(data);
       //console.log({ data });
     }
+  });
 
-    async function getConvos(wallet: string) {
-      const response = await fetch(`/api/message?wallet=${wallet}`);
-      const data = await response.json();
-      console.log({ data });
+  useEffect(() => {
+    async function setupXMTP() {
+      try {
+        if (signer) {
+          const xmtp = await Client.create(signer);
+          setXmtpClient(xmtp);
+        }
+      } catch (e) {
+        /* handle error */
+        console.error(e);
+      }
     }
-    getConvos("whatever");
-  }, []);
+
+    setupXMTP();
+  }, [signer]);
+
+  useEffect(() => {
+    async function fetchConvos() {
+      if (xmtpClient) {
+        const allConversations = await xmtpClient.conversations.list();
+        console.log("conversations", allConversations);
+        setConversations(allConversations);
+      }
+    }
+    fetchConvos();
+  }, [xmtpClient]);
+
+  console.log(signer);
 
   return (
     <>
