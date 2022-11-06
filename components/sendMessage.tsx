@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useAccount } from "wagmi";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const SendMessage = ({ ...props }) => {
-  const { data: session, status }: any = useSession();
+  const { address } = useAccount();
   const router = useRouter();
 
   const [addressInputVisible, setAddressInputVisible] = useState(false);
@@ -17,7 +18,7 @@ const SendMessage = ({ ...props }) => {
         method: "POST",
         body: JSON.stringify({
           message: formData.message,
-          from: session.address,
+          from: address,
           to: null,
         }),
       });
@@ -57,8 +58,8 @@ const SendMessage = ({ ...props }) => {
 
   return (
     <>
-      {status != "authenticated" ? (
-        <>nope</>
+      {!address ? (
+        <ConnectButton label="Connect account" />
       ) : (
         <>
           <form

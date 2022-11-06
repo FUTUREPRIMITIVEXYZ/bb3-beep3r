@@ -7,11 +7,6 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-import {
-  RainbowKitSiweNextAuthProvider,
-  GetSiweMessageOptions,
-} from "@rainbow-me/rainbowkit-siwe-next-auth";
-import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 
 const ALCHEMY_PROVIDER = alchemyProvider({ apiKey: process.env.ALCHEMY_ID });
@@ -31,10 +26,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <Component {...pageProps} message={message} setMessage={setMessage} />
     );
   }
-
-  const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-    statement: message,
-  });
 
   useEffect(() => {
     const { chains, provider } = configureChains(
@@ -66,19 +57,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <SessionProvider refetchInterval={0} session={pageProps.session}>
+      {/* <SessionProvider refetchInterval={0} session={pageProps.session}>
         <RainbowKitSiweNextAuthProvider
           getSiweMessageOptions={getSiweMessageOptions}
-        >
-          <RainbowKitProvider chains={chains}>
-            <Component
-              {...pageProps}
-              message={message}
-              setMessage={setMessage}
-            />
-          </RainbowKitProvider>
-        </RainbowKitSiweNextAuthProvider>
-      </SessionProvider>
+        > */}
+      <RainbowKitProvider chains={chains}>
+        <Component {...pageProps} message={message} setMessage={setMessage} />
+      </RainbowKitProvider>
+      {/* </RainbowKitSiweNextAuthProvider>
+      </SessionProvider> */}
     </WagmiConfig>
   );
 }

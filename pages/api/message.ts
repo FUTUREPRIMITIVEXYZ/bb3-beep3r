@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
 import { Queue } from "bullmq";
 import connection from "../../workers/connection";
@@ -90,13 +89,6 @@ export default async function handler(
       return res.status(200).send(response);
     }
 
-    const session = await getSession({ req });
-    if (session === null) {
-      return res.status(401).send("not authenticated");
-    }
-
-    const sessionAddress = session?.user?.name || "";
-
     if (method === "POST") {
       console.log(baseLog + " creating message(s)...");
       const body = JSON.parse(req.body);
@@ -112,9 +104,6 @@ export default async function handler(
       }
 
       console.log({ from, to, message });
-
-      if (sessionAddress.toLowerCase() !== from.toLowerCase())
-        return res.status(401).send("Bad request");
 
       const [fromUser, toUser] = await Promise.all([
         prisma.user.findFirst({ where: { wallet: from } }),

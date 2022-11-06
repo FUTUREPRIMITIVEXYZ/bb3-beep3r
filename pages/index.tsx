@@ -1,14 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { motion } from "framer-motion";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import Announcements from "../components/announcements";
 import Convos from "../components/convos";
 import Menu from "../components/menu";
 import SendMessage from "../components/sendMessage";
-import { useEffect } from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function Home() {
   const [modalSelection, setModalSelection] = useState(0);
@@ -78,11 +76,12 @@ export default function Home() {
         )}
 
         <a href="sms:+12058838339">
-          <div className="absolute top-8 z-[9] w-1/2 p-4 cursor-pointer font-thin tracking-wider font-sans text-white ml-16 text-sm">
-            <p>
+          <div className="absolute top-8 z-[9] w-full justify-between p-4 cursor-pointer font-thin tracking-wider font-sans text-white ml-16 text-sm">
+            <p className="w-1/2">
               This is a dynamic NFT made at ETHSF. Get your BEEPER by texting
               (205)-883-8339
             </p>
+            <ConnectButton />
           </div>
         </a>
         <div className="w-full translate-y-16">
