@@ -2,6 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Twilio from "twilio";
 import { PrismaClient } from "@prisma/client";
+import { Client, Conversation } from "@xmtp/xmtp-js";
+import { ethers } from "ethers";
+import { sortBy } from "lodash";
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,9 +25,46 @@ export default async function handler(
 
   const response = new Twilio.twiml.VoiceResponse();
 
-  response.say(
-    "greetings eeth SF hacker. this is mizuna from the BB3 mainframe. you have been selected to participate in the beep3r experiment. Text your wallet address or ENS to this number to begin. Goodbye."
-  );
+  const xmtpWallet = new ethers.Wallet(process.env.XMTP_PRIVATE_KEY!);
+
+  const xmtp = await Client.create(xmtpWallet);
+
+  const messages = [];
+
+  const allConversations = await xmtp.conversations.list();
+
+  for (const conversation of allConversations) {
+    for await (const page of conversation.messagesPaginated({
+      pageSize: 25,
+    })) {
+      for (const msg of page) {
+        messages.push({
+          userFrom: {
+            wallet: msg.senderAddress,
+          },
+          text: msg.content,
+          sent: msg.sent,
+        });
+      }
+    }
+  }
+
+  const mostRecentBroadcasts = sortBy(messages, ["sent"]).slice(0, 3);
+
+  const output = `greetings eeth SF hacker. this is mizuna from the BB3 mainframe. here are the most recent broadcasts: ${mostRecentBroadcasts
+    .map(
+      (broadcast: any) =>
+        `from ${broadcast.userFrom.wallet
+          .slice(0, 6)
+          .split("")
+          .join(" ")
+          .replace("x", "ex")}: ${broadcast.text}`
+    )
+    .join("; ")}`;
+
+  console.log(output);
+
+  response.say(output);
 
   res.setHeader("Content-Type", "text/xml");
 

@@ -6,7 +6,6 @@ import { useSigner, useProvider } from "wagmi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const Convos = () => {
-  const [selectedConvo, setSelectedConvo] = useState<Conversation>();
   const { data: signer, isError, isLoading } = useSigner();
   const provider = useProvider();
   const queryClient = useQueryClient();
