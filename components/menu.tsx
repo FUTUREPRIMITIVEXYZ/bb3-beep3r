@@ -6,8 +6,8 @@ const Menu = ({ ...props }) => {
   const navItems = [
     { path: "/", icon: "speaker", title: "announcements", id: 1, active: true },
     { path: "/", icon: "mail", title: "send", id: 2, active: true },
-    { path: "/", icon: "smile", title: "lucky", id: 1, active: false },
-    { path: "/", icon: "web", title: "my messages", id: 1, active: false },
+    { path: "/", icon: "smile", title: "lucky", id: 3, active: true },
+    { path: "/", icon: "web", title: "my messages", id: 4, active: true },
   ];
 
   return (
