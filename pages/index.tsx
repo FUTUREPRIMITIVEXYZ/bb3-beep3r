@@ -14,17 +14,6 @@ export default function Home() {
   const [modalSelection, setModalSelection] = useState(0);
   const [recipientAddress, setRecipientAddress] = useState("");
 
-  useEffect(() => {
-    async function getUsers() {
-      const response = await fetch("/api/user");
-
-      const data = await response.json();
-
-      console.log({ data });
-    }
-    getUsers();
-  }, []);
-
   return (
     <div>
       <Head>
@@ -61,7 +50,7 @@ export default function Home() {
             <div className="w-full">
               <p
                 onClick={() => setModalSelection(0)}
-                className="bg-greydark text-white w-fit px-2 rounded-full cursor-pointer"
+                className="bg-greydark text-white w-fit px-2 rounded-full cursor-pointer font-mono uppercase"
               >
                 ← back
               </p>
