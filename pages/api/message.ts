@@ -6,7 +6,7 @@ import connection from "../../workers/connection";
 import { Client, Conversation } from "@xmtp/xmtp-js";
 import { ethers } from "ethers";
 
-import { sortBy } from "lodash";
+import { orderBy } from "lodash";
 
 export default async function handler(
   req: NextApiRequest,
@@ -45,7 +45,11 @@ export default async function handler(
         }
       }
 
-      const sortedMessages = sortBy(messages, [(message: any) => message.sent]);
+      const sortedMessages = orderBy(
+        messages,
+        [(message: any) => message.sent.getTime()],
+        ["desc"]
+      );
 
       return res.status(200).json(sortedMessages);
     }
