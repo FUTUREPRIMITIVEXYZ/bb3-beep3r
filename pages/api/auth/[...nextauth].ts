@@ -115,6 +115,7 @@ export default async function auth(req: any, res: any) {
             return true;
           }
 
+
           // console.log("CHECKING CONTRACT...");
           // const balance = await contract.balanceOf(result.data.address);
           // const balanceNumber = balance.toNumber();

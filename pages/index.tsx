@@ -60,7 +60,12 @@ export default function Home() {
                 case 1:
                   return <Announcements />;
                 case 2:
-                  return <SendMessage recipient={"all"} />;
+                  return (
+                    <SendMessage
+                      recipient={"all"}
+                      setModalSelection={setModalSelection}
+                    />
+                  );
                 case 3:
                   return <SendMessage recipient={"random"} />;
                 case 4:
