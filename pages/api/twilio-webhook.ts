@@ -117,6 +117,8 @@ export default async function handler(
 
   const walletBalance = (await contract.balanceOf(user.wallet)).toNumber();
 
+  console.log(user.hasClaimedAirdrop, user.wallet, walletBalance);
+
   // mint token to new wallets
   if (!user.hasClaimedAirdrop && user.wallet !== null && walletBalance === 0) {
     console.log("triggering mint flow for ", user.phone, user.wallet);
