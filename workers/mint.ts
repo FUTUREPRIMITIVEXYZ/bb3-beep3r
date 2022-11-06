@@ -7,7 +7,7 @@ import {
   DefenderRelaySigner,
 } from "defender-relay-client/lib/ethers";
 import { BigNumber, ethers } from "ethers";
-import artifact from "../contracts/artifacts/src/BEEPER.sol/BEEPER.json";
+import artifact from "../BEEPER.json";
 import { Queue } from "bullmq";
 import crypto from "crypto";
 
