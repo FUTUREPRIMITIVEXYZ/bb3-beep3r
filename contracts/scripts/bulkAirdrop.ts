@@ -4,6 +4,8 @@ import { RelayClient } from "defender-relay-client";
 
 import { PrismaClient } from "@prisma/client";
 
+import { BigNumber } from "ethers";
+
 import {
   DefenderRelayProvider,
   DefenderRelaySigner,
@@ -36,20 +38,30 @@ async function main() {
 
   const results = await Promise.all(
     usersWithWallets.map(async (user) => {
-      // const mintTx = await beeper
-      //   .connect(signer)
-      //   .safeMint(user.wallet);
+      if (user.wallet) {
+        const walletBalance = (await beeper.balanceOf(user.wallet)).toNumber();
 
-      console.log(user.wallet);
+        if (walletBalance === 0) {
+          console.log(`Airdropping beeper to ${user.wallet}`);
 
-      // await prisma.user.update({
-      //   where: {
-      //     id: user.id,
-      //   },
-      //   data: {
-      //     hasClaimedAirdrop: true,
-      //   },
-      // });
+          const mintTx = await beeper.connect(signer).safeMint(user.wallet);
+
+          console.log(mintTx);
+
+          await mintTx.wait();
+
+          console.log(`Successfully airdropped to ${user.wallet}`);
+
+          await prisma.user.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              hasClaimedAirdrop: true,
+            },
+          });
+        }
+      }
     })
   );
 
