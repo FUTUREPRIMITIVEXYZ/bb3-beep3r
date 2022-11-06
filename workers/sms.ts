@@ -59,4 +59,8 @@ const worker = new Worker<SMSJobData>(
   { connection, autorun: false }
 );
 
+worker.on("failed", (job: Job, error: Error) => {
+  console.log(job.name, job.data, error);
+});
+
 export default worker;
