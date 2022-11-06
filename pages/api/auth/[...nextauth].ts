@@ -7,6 +7,7 @@ import { ethers } from "ethers";
 import abi from "./abi.json";
 
 const BEEPER_ADDRESS = process.env.BEEPER_ADDRESS || "";
+const BOSS_WALLETS = process.env.BOSS_WALLETS || "";
 
 const prisma = new PrismaClient();
 
@@ -106,6 +107,15 @@ export default async function auth(req: any, res: any) {
 
           const [, code] = tuple;
 
+          if (
+            !code &&
+            BOSS_WALLETS.split(",").some((w) => w === result.data.address)
+          ) {
+            console.log("no code and is boss wallet");
+            return true;
+          }
+
+
           // console.log("CHECKING CONTRACT...");
           // const balance = await contract.balanceOf(result.data.address);
           // const balanceNumber = balance.toNumber();
@@ -115,8 +125,8 @@ export default async function auth(req: any, res: any) {
           //   return false;
           // }
 
-          // TODO: check if code & wallet are the same
           console.log("UPDATING USER...");
+
           const user = await prisma.user.findUnique({ where: { code } });
 
           if (!user || user.wallet !== result.data.address) {
