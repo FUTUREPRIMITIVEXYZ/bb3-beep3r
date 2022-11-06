@@ -10,7 +10,7 @@ import {
 async function main() {
   const beeper = await ethers.getContractAt(
     "BEEPER",
-    "0xe9d3fE575e44803613B6fbd64C8f4A55BE55ab83"
+    process.env.BEEPER_ADDRESS!
   );
 
   const relayAddress = process.env.GOERLI_RELAY_ADDRESS!;
