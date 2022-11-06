@@ -6,7 +6,7 @@ import { PrismaClient } from "@prisma/client";
 import { ethers } from "ethers";
 import abi from "./abi.json";
 
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || "";
+const BEEPER_ADDRESS = process.env.BEEPER_ADDRESS || "";
 
 const prisma = new PrismaClient();
 
@@ -15,7 +15,7 @@ const provider = new ethers.providers.AlchemyProvider(
   process.env.ALCHEMY_API_KEY
 );
 
-const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
+const contract = new ethers.Contract(BEEPER_ADDRESS, abi, provider);
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
