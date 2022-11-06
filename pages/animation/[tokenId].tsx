@@ -23,6 +23,7 @@ const Animation = () => {
     async function getUsers() {
       const response = await fetch("/api/message");
       const data = await response.json();
+      data.reverse();
       setPublicMessages(data);
       setLoadingMessages(false);
     }
@@ -86,7 +87,7 @@ const Animation = () => {
             >
               <a
                 className="w-full"
-                href="beepers.bb3.xyz"
+                href="https://beepers.bb3.xyz"
                 target="_blank"
                 rel="noreferrer"
               >
