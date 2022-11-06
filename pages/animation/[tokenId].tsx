@@ -91,7 +91,7 @@ const Animation = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <p className="flex tems-center animate-pulse">
+                <p className="flex tems-center animate-pulse font-['ui-monospace']">
                   <span className="mr-4">💌</span> send a message on
                   beeper.bb3.xyz
                 </p>
