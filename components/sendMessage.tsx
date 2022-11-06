@@ -11,7 +11,12 @@ const SendMessage = ({ ...props }) => {
   const router = useRouter();
 
   const [addressInputVisible, setAddressInputVisible] = useState(false);
-  const { register, setValue, handleSubmit } = useForm();
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [formData, setFormData] = useState("");
 
   const { data: signer, isError, isLoading } = useSigner();
@@ -23,10 +28,16 @@ const SendMessage = ({ ...props }) => {
       async function postMessage() {
         if (signer && formData.message) {
           const xmtp = await Client.create(signer);
-          const conversation = await xmtp.conversations.newConversation(
-            "0x30363923590B9337D8Be5Ea0b030bAC0fD7970a4"
-          );
-          await conversation.send(formData.message);
+          try {
+            const conversation = await xmtp.conversations.newConversation(
+              formData.recipient
+                ? formData.recipient
+                : "0x30363923590B9337D8Be5Ea0b030bAC0fD7970a4"
+            );
+            await conversation.send(formData.message);
+          } catch (e) {
+            /* handle error */
+          }
         }
       }
       postMessage().then(() => {
